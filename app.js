@@ -74,15 +74,47 @@ const menu = [
 ];
 
 const sectionCenter = document.querySelector(".section-center"); 
+const filterBtns = document.querySelectorAll(".filter-btn"); 
+
+
+//loading items
 
 window.addEventListener("DOMContentLoaded", function () {
-  let displayMenu = menu.map( (item) => {
+ displayMenuItems(menu);
+}); 
+
+//filter items 
+
+filterBtns.forEach(function (btn) {
+  btn.addEventListener("click", function (e) {
+    const category = e.currentTarget.dataset.id; 
+
+    const menuCategory = menu.filter((menuItem)=> {
+      
+      if(menuItem.category === category){
+        return menuItem;
+      }
+    }); 
+    if(category === 'all'){
+      displayMenuItems(menu);
+    }else {
+      displayMenuItems(menuCategory)
+    }
+  })
+})
+
+
+
+
+
+function displayMenuItems(menuItems) {
+  let displayMenu = menuItems.map( (item) => {
     return `<article class="menu-item">
     <img src="${item.img}" class="photo">
     <div class="item-info">
       <header>
        <h4>${item.title}</h4>
-       <h4 class="price">${item.price}</h4>
+       <h4 class="price">$${item.price}</h4>
       </header>
       <p class="item-text">${item.desc}</p>
     </div>
@@ -90,4 +122,4 @@ window.addEventListener("DOMContentLoaded", function () {
   }); 
   displayMenu = displayMenu.join("")
   sectionCenter.innerHTML = displayMenu; 
-})
+}
